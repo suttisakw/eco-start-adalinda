@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -19,6 +19,7 @@ import {
   Tv,
   Waves
 } from 'lucide-react'
+import { CategoryService, CategoryStats } from '@/lib/categoryService'
 
 interface Category {
   name: string
@@ -43,13 +44,83 @@ export default function CategorySlider({
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const categories: Category[] = [
+  // Icon mapping for categories
+  const categoryIcons: Record<string, any> = {
+    'refrigerator': Refrigerator,
+    'air-conditioner': Wind,
+    'washing-machine': WashingMachine,
+    'microwave': Microwave,
+    'water-heater': Droplets,
+    'fan': Fan,
+    'hair-dryer': HairDryer,
+    'tv': Tv,
+    'water-pump': Waves
+  }
+
+  // Color mapping for categories
+  const categoryColors: Record<string, string> = {
+    'refrigerator': 'from-blue-100 to-blue-200',
+    'air-conditioner': 'from-cyan-100 to-cyan-200',
+    'washing-machine': 'from-purple-100 to-purple-200',
+    'microwave': 'from-orange-100 to-orange-200',
+    'water-heater': 'from-red-100 to-red-200',
+    'fan': 'from-green-100 to-green-200',
+    'hair-dryer': 'from-pink-100 to-pink-200',
+    'tv': 'from-indigo-100 to-indigo-200',
+    'water-pump': 'from-teal-100 to-teal-200'
+  }
+
+  useEffect(() => {
+    fetchCategoryStats()
+  }, [])
+
+  const fetchCategoryStats = async () => {
+    try {
+      setLoading(true)
+      const categoryStats = await CategoryService.getCategoryStats()
+      
+      // Calculate total products
+      const totalProducts = categoryStats.reduce((sum, stat) => sum + stat.count, 0)
+      
+      // Create categories array with real data
+      const categoriesWithData: Category[] = [
+        {
+          name: 'ทั้งหมด',
+          slug: '',
+          icon: Package,
+          count: totalProducts,
+          description: 'สินค้าทั้งหมด',
+          color: 'from-gray-100 to-gray-200'
+        },
+        ...categoryStats.map(stat => ({
+          name: stat.category,
+          slug: stat.slug,
+          icon: categoryIcons[stat.slug] || Package,
+          count: stat.count,
+          description: `${stat.category}ประหยัดไฟ`,
+          color: categoryColors[stat.slug] || 'from-gray-100 to-gray-200'
+        }))
+      ]
+      
+      setCategories(categoriesWithData)
+    } catch (error) {
+      console.error('Error fetching category stats:', error)
+      // Fallback to default categories if API fails
+      setCategories(getDefaultCategories())
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getDefaultCategories = (): Category[] => [
     {
       name: 'ทั้งหมด',
       slug: '',
       icon: Package,
-      count: 500,
+      count: 0,
       description: 'สินค้าทั้งหมด',
       color: 'from-gray-100 to-gray-200'
     },
@@ -57,39 +128,39 @@ export default function CategorySlider({
       name: 'ตู้เย็น',
       slug: 'refrigerator',
       icon: Refrigerator,
-      count: 45,
-      description: 'ตู้เย็นเบอร์ 5 ประหยัดไฟ',
+      count: 0,
+      description: 'ตู้เย็นประหยัดไฟ',
       color: 'from-blue-100 to-blue-200'
     },
     {
       name: 'แอร์',
       slug: 'air-conditioner',
       icon: Wind,
-      count: 38,
-      description: 'แอร์ประหยัดไฟเบอร์ 5',
+      count: 0,
+      description: 'แอร์ประหยัดไฟ',
       color: 'from-cyan-100 to-cyan-200'
     },
     {
       name: 'เครื่องซักผ้า',
       slug: 'washing-machine',
       icon: WashingMachine,
-      count: 32,
-      description: 'เครื่องซักผ้าเบอร์ 5',
+      count: 0,
+      description: 'เครื่องซักผ้าประหยัดไฟ',
       color: 'from-purple-100 to-purple-200'
     },
     {
       name: 'ไมโครเวฟ',
       slug: 'microwave',
       icon: Microwave,
-      count: 28,
-      description: 'ไมโครเวฟเบอร์ 5',
+      count: 0,
+      description: 'ไมโครเวฟประหยัดไฟ',
       color: 'from-orange-100 to-orange-200'
     },
     {
       name: 'เครื่องทำน้ำอุ่น',
       slug: 'water-heater',
       icon: Droplets,
-      count: 25,
+      count: 0,
       description: 'เครื่องทำน้ำอุ่นประหยัดไฟ',
       color: 'from-red-100 to-red-200'
     },
@@ -97,7 +168,7 @@ export default function CategorySlider({
       name: 'พัดลม',
       slug: 'fan',
       icon: Fan,
-      count: 22,
+      count: 0,
       description: 'พัดลมประหยัดไฟ',
       color: 'from-green-100 to-green-200'
     },
@@ -105,15 +176,15 @@ export default function CategorySlider({
       name: 'เครื่องเป่าผม',
       slug: 'hair-dryer',
       icon: HairDryer,
-      count: 18,
-      description: 'เครื่องเป่าผมเบอร์ 5',
+      count: 0,
+      description: 'เครื่องเป่าผมประหยัดไฟ',
       color: 'from-pink-100 to-pink-200'
     },
     {
       name: 'ทีวี',
       slug: 'tv',
       icon: Tv,
-      count: 35,
+      count: 0,
       description: 'ทีวีประหยัดไฟ',
       color: 'from-indigo-100 to-indigo-200'
     },
@@ -121,7 +192,7 @@ export default function CategorySlider({
       name: 'ปั๊มน้ำ',
       slug: 'water-pump',
       icon: Waves,
-      count: 15,
+      count: 0,
       description: 'ปั๊มน้ำประหยัดไฟ',
       color: 'from-teal-100 to-teal-200'
     }
@@ -151,6 +222,25 @@ export default function CategorySlider({
     if (onCategorySelect) {
       onCategorySelect(slug)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className={`relative ${className}`}>
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+          {[...Array(5)].map((_, index) => (
+            <Card key={index} className="flex-shrink-0 w-40 animate-pulse">
+              <CardContent className="p-4 text-center">
+                <div className="w-12 h-12 bg-gray-200 rounded-xl mx-auto mb-3" />
+                <div className="h-4 bg-gray-200 rounded mb-2" />
+                <div className="h-3 bg-gray-200 rounded mb-2" />
+                <div className="h-3 bg-gray-200 rounded w-1/2 mx-auto" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    )
   }
 
   return (

@@ -236,7 +236,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             {/* Mobile Footer */}
             <div className="border-t border-gray-200/50 p-6 bg-gradient-to-r from-gray-50/90 to-white/90 backdrop-blur-xl">
               <div className="text-center text-sm text-gray-600">
-                <div className="font-semibold mb-1 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">เว็บไซต์ประหยัดไฟเบอร์ 5</div>
+                <div className="font-semibold mb-1 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">เว็บไซต์เลือกให้คุ้ม.com</div>
                 <div className="text-xs text-gray-500 flex items-center justify-center">
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                   Admin Panel (Public Access)
@@ -308,7 +308,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             {/* Desktop Footer */}
             <div className="border-t border-gray-200 p-6 bg-gray-50/50 backdrop-blur-sm">
               <div className="text-center text-sm text-gray-600">
-                <div className="font-medium mb-1">เว็บไซต์ประหยัดไฟเบอร์ 5</div>
+                <div className="font-medium mb-1">เว็บไซต์เลือกให้คุ้ม.com</div>
                 <div className="text-xs text-gray-500">Admin Panel (Public Access)</div>
               </div>
             </div>
@@ -331,7 +331,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
               <div className="flex flex-1 items-center">
                 <div className="text-sm text-gray-600">
-                  <span className="font-medium">เว็บไซต์ประหยัดไฟเบอร์ 5</span>
+                  <span className="font-medium">เว็บไซต์เลือกให้คุ้ม.com</span>
                   <span className="mx-2">•</span>
                   <span>Admin Panel (Public Access)</span>
                 </div>

@@ -15,7 +15,7 @@ export default function SEOOptimizer({
   product,
   children
 }: SEOOptimizerProps) {
-  const fullTitle = `${title} | ประหยัดไฟเบอร์ 5`
+  const fullTitle = `${title} | เลือกให้คุ้ม.com`
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
   
   // ใช้ redirect URL สำหรับ Facebook sharing เพื่อให้สามารถ track และ redirect ได้
@@ -45,7 +45,7 @@ export default function SEOOptimizer({
         <meta name="description" content={description} />
         <meta name="keywords" content={finalKeywords.join(', ')} />
         <meta name="robots" content="index, follow" />
-        <meta name="author" content="เว็บไซต์ประหยัดไฟเบอร์ 5" />
+        <meta name="author" content="เลือกให้คุ้ม.com" />
         <meta name="language" content="th" />
         <meta name="revisit-after" content="7 days" />
         
@@ -58,7 +58,7 @@ export default function SEOOptimizer({
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={product?.name || title} />
-        <meta property="og:site_name" content="ประหยัดไฟเบอร์ 5" />
+        <meta property="og:site_name" content="เลือกให้คุ้ม.com" />
         <meta property="og:locale" content="th_TH" />
         
         {/* Product-specific Open Graph Tags */}
@@ -97,7 +97,7 @@ export default function SEOOptimizer({
         <meta name="format-detection" content="telephone=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="ประหยัดไฟเบอร์ 5" />
+        <meta name="apple-mobile-web-app-title" content="เลือกให้คุ้ม.com" />
         
         {/* Facebook App ID (ถ้ามี) */}
         <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || ''} />
@@ -174,8 +174,8 @@ export default function SEOOptimizer({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "เว็บไซต์ประหยัดไฟเบอร์ 5",
-              "description": "เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงาน",
+              "name": "เลือกให้คุ้ม.com",
+              "description": "เลือกให้คุ้ม.com - เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงาน",
               "url": process.env.NEXT_PUBLIC_SITE_URL,
               "logo": `${process.env.NEXT_PUBLIC_SITE_URL}/assets/logo.png`,
               "sameAs": [
@@ -193,8 +193,8 @@ export default function SEOOptimizer({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "ประหยัดไฟเบอร์ 5",
-              "description": "เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ",
+              "name": "เลือกให้คุ้ม.com",
+              "description": "เลือกให้คุ้ม.com - เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ",
               "url": process.env.NEXT_PUBLIC_SITE_URL,
               "potentialAction": {
                 "@type": "SearchAction",

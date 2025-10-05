@@ -84,18 +84,7 @@ export default function SearchPage() {
     <SEOOptimizer {...seoData}>
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="text-responsive-2xl lg:text-4xl font-bold text-gray-900 mb-4 text-balance">
-              {query ? `ผลการค้นหา "${query}"` : 'ค้นหาสินค้าเบอร์ 5'}
-            </h1>
-            <p className="text-lg text-gray-600">
-              {products.length > 0 
-                ? `พบ ${products.length} สินค้าที่ตรงกับเงื่อนไข` 
-                : 'ไม่พบสินค้าที่ตรงกับเงื่อนไข'
-              }
-            </p>
-          </div>
+
 
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Sidebar - Search & Filters */}

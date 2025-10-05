@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Simple middleware - no authentication required
-// All routes are now public
 export async function middleware(req: NextRequest) {
   // Allow all requests to pass through
   return NextResponse.next()

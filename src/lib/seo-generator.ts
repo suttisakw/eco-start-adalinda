@@ -62,8 +62,8 @@ export class SEOGenerator {
     }
     
     const categoryName = categoryNames[category.name as keyof typeof categoryNames] || category.name
-    const title = `เครื่องใช้ไฟฟ้า${categoryName}เบอร์ 5 ประหยัดไฟ`
-    const description = `เลือกซื้อเครื่องใช้ไฟฟ้า${categoryName}เบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงานจาก EGAT`
+    const title = `เลือกให้คุ้ม.com - เครื่องใช้ไฟฟ้า${categoryName}เบอร์ 5 ประหยัดไฟ`
+    const description = `เลือกให้คุ้ม.com - เลือกซื้อเครื่องใช้ไฟฟ้า${categoryName}เบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงานจาก EGAT`
     const keywords = [
       `เครื่องใช้ไฟฟ้า${categoryName}`,
       'เบอร์ 5',
@@ -85,8 +85,8 @@ export class SEOGenerator {
   
   static generateHomepageSEO(): SEOProps {
     return {
-      title: 'เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ - เปรียบเทียบราคา Shopee',
-      description: 'ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee พร้อมคำแนะนำการประหยัดพลังงาน',
+      title: 'เลือกให้คุ้ม.com - เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ',
+      description: 'เลือกให้คุ้ม.com - ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee พร้อมคำแนะนำการประหยัดพลังงาน',
       keywords: [
         'เครื่องใช้ไฟฟ้าเบอร์ 5',
         'ประหยัดไฟ',
@@ -104,8 +104,8 @@ export class SEOGenerator {
   }
 
   static generateSearchSEO(query: string, resultsCount: number): SEOProps {
-    const title = `ค้นหา "${query}" - เครื่องใช้ไฟฟ้าเบอร์ 5`
-    const description = `ผลการค้นหา "${query}" พบ ${resultsCount} สินค้าเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงาน`
+    const title = `เลือกให้คุ้ม.com - ค้นหา "${query}" เครื่องใช้ไฟฟ้าเบอร์ 5`
+    const description = `เลือกให้คุ้ม.com - ผลการค้นหา "${query}" พบ ${resultsCount} สินค้าเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงาน`
     const keywords = [
       query,
       'เครื่องใช้ไฟฟ้าเบอร์ 5',
@@ -125,8 +125,8 @@ export class SEOGenerator {
 
   static generateCompareSEO(products: Product[]): SEOProps {
     const productNames = products.map(p => p.name).join(', ')
-    const title = `เปรียบเทียบ ${products.length} สินค้าเบอร์ 5`
-    const description = `เปรียบเทียบ ${productNames} ข้อมูลประหยัดไฟ ราคา และคุณสมบัติจาก EGAT`
+    const title = `เลือกให้คุ้ม.com - เปรียบเทียบ ${products.length} สินค้าเบอร์ 5`
+    const description = `เลือกให้คุ้ม.com - เปรียบเทียบ ${productNames} ข้อมูลประหยัดไฟ ราคา และคุณสมบัติจาก EGAT`
     const keywords = [
       'เปรียบเทียบ',
       'เครื่องใช้ไฟฟ้าเบอร์ 5',
@@ -145,7 +145,7 @@ export class SEOGenerator {
   }
 
   static generateBlogSEO(title: string, description: string, tags: string[] = []): SEOProps {
-    const fullTitle = `${title} - เคล็ดลับประหยัดไฟ`
+    const fullTitle = `เลือกให้คุ้ม.com - ${title} เคล็ดลับประหยัดไฟ`
     const keywords = [
       'เคล็ดลับประหยัดไฟ',
       'ประหยัดพลังงาน',
@@ -165,8 +165,8 @@ export class SEOGenerator {
 
   static generateAboutSEO(): SEOProps {
     return {
-      title: 'เกี่ยวกับเรา - เว็บไซต์ประหยัดไฟเบอร์ 5',
-      description: 'เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงานจาก EGAT',
+      title: 'เลือกให้คุ้ม.com - เกี่ยวกับเรา',
+      description: 'เลือกให้คุ้ม.com - เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงานจาก EGAT',
       keywords: [
         'เกี่ยวกับเรา',
         'ประหยัดไฟ',
@@ -181,8 +181,8 @@ export class SEOGenerator {
 
   static generateContactSEO(): SEOProps {
     return {
-      title: 'ติดต่อเรา - เว็บไซต์ประหยัดไฟเบอร์ 5',
-      description: 'ติดต่อสอบถามเกี่ยวกับเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ คำแนะนำการประหยัดพลังงาน',
+      title: 'เลือกให้คุ้ม.com - ติดต่อเรา',
+      description: 'เลือกให้คุ้ม.com - ติดต่อสอบถามเกี่ยวกับเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ คำแนะนำการประหยัดพลังงาน',
       keywords: [
         'ติดต่อเรา',
         'ประหยัดไฟ',

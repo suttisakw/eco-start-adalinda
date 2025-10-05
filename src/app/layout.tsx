@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
-  title: 'เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ - เปรียบเทียบราคา Shopee',
-  description: 'ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee พร้อมคำแนะนำการประหยัดพลังงาน',
+  title: 'เลือกให้คุ้ม.com - เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ',
+  description: 'เลือกให้คุ้ม.com - ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee พร้อมคำแนะนำการประหยัดพลังงาน',
   keywords: [
     'เครื่องใช้ไฟฟ้าเบอร์ 5',
     'ประหยัดไฟ',
@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     'พลังงาน',
     'เครื่องใช้ไฟฟ้าประหยัดพลังงาน'
   ],
-  authors: [{ name: 'เว็บไซต์ประหยัดไฟเบอร์ 5' }],
-  creator: 'เว็บไซต์ประหยัดไฟเบอร์ 5',
-  publisher: 'เว็บไซต์ประหยัดไฟเบอร์ 5',
+  authors: [{ name: 'เลือกให้คุ้ม.com' }],
+  creator: 'เลือกให้คุ้ม.com',
+  publisher: 'เลือกให้คุ้ม.com',
   robots: {
     index: true,
     follow: true,
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'th_TH',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com',
-    siteName: 'ประหยัดไฟเบอร์ 5',
-    title: 'เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ - เปรียบเทียบราคา Shopee',
-    description: 'ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee',
+    siteName: 'เลือกให้คุ้ม.com',
+    title: 'เลือกให้คุ้ม.com - เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ',
+    description: 'เลือกให้คุ้ม.com - ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee',
     images: [
       {
         url: '/assets/hero-banner.svg',
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ - เปรียบเทียบราคา Shopee',
-    description: 'ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee',
+    title: 'เลือกให้คุ้ม.com - เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ',
+    description: 'เลือกให้คุ้ม.com - ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ ข้อมูลจาก EGAT ราคาจาก Shopee',
     images: ['/assets/hero-banner.svg'],
   },
   verification: {

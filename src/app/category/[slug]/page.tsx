@@ -24,6 +24,7 @@ import { Product, Category, FilterOptions, SortOptions } from '@/types'
 import { SEOGenerator } from '@/lib/seo-generator'
 import { formatPrice } from '@/lib/utils'
 import { ProductService } from '@/lib/productService'
+import { CategoryService } from '@/lib/categoryService'
 
 export default function CategoryPage() {
   const params = useParams()
@@ -35,14 +36,24 @@ export default function CategoryPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [sortBy, setSortBy] = useState<SortOptions>({ field: 'created_at', direction: 'desc' })
   const [filters, setFilters] = useState<FilterOptions>({})
+  const [initialLoad, setInitialLoad] = useState(false)
 
+  // Load category data only once when slug changes
   useEffect(() => {
-    if (slug) {
-      fetchCategoryAndProducts()
+    if (slug && !initialLoad) {
+      fetchCategoryData()
+      setInitialLoad(true)
     }
-  }, [slug, filters, sortBy])
+  }, [slug])
 
-  const fetchCategoryAndProducts = async () => {
+  // Load products when filters or sort change (but not on initial load)
+  useEffect(() => {
+    if (initialLoad && category) {
+      fetchProducts()
+    }
+  }, [filters, sortBy])
+
+  const fetchCategoryData = async () => {
     try {
       setLoading(true)
       
@@ -59,16 +70,40 @@ export default function CategoryPage() {
         'water-pump': 'ปั๊มน้ำ'
       }
 
-      const mockCategory: Category = {
-        id: slug,
-        name: categoryNames[slug as keyof typeof categoryNames] || slug,
-        slug: slug,
-        description: `เครื่องใช้ไฟฟ้า${categoryNames[slug as keyof typeof categoryNames] || slug}เบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงาน`,
-        is_active: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+      // Try to get category from database first
+      let categoryData = await CategoryService.getCategoryBySlug(slug)
+      
+      // If category not found in database, create a fallback
+      if (!categoryData) {
+        categoryData = {
+          id: slug,
+          name: categoryNames[slug as keyof typeof categoryNames] || slug,
+          slug: slug,
+          description: `เครื่องใช้ไฟฟ้า${categoryNames[slug as keyof typeof categoryNames] || slug}เบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงาน`,
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }
       }
+      
+      setCategory(categoryData)
+      
+      // Load products after category is set
+      if (categoryData) {
+        await fetchProducts()
+      }
+    } catch (error) {
+      console.error('Error fetching category data:', error)
+      setCategory(null)
+    } finally {
+      setLoading(false)
+    }
+  }
 
+  const fetchProducts = async () => {
+    if (!category) return
+
+    try {
       // Fetch products from database
       const result = await ProductService.getProducts({
         status: 'active',
@@ -87,13 +122,10 @@ export default function CategoryPage() {
                product.specifications?.category === slug
       })
       
-      setCategory(mockCategory)
       setProducts(categoryProducts)
     } catch (error) {
-      console.error('Error fetching category and products:', error)
+      console.error('Error fetching products:', error)
       setProducts([])
-    } finally {
-      setLoading(false)
     }
   }
 

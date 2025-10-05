@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     
     if (!product) {
       return {
-        title: 'ไม่พบสินค้า | ประหยัดไฟเบอร์ 5',
+        title: 'ไม่พบสินค้า | เลือกให้คุ้ม.com',
         description: 'ไม่พบสินค้าที่คุณกำลังมองหา',
       }
     }
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             alt: product.name,
           },
         ],
-        siteName: 'ประหยัดไฟเบอร์ 5',
+        siteName: 'เลือกให้คุ้ม.com',
         locale: 'th_TH',
       },
       twitter: {
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   } catch (error) {
     console.error('Error generating metadata:', error)
     return {
-      title: 'สินค้า | ประหยัดไฟเบอร์ 5',
+      title: 'สินค้า | เลือกให้คุ้ม.com',
       description: 'ดูข้อมูลสินค้าประหยัดไฟ',
     }
   }

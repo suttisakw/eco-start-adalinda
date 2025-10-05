@@ -25,30 +25,38 @@ import { Product } from '@/types'
 import { SEOGenerator } from '@/lib/seo-generator'
 import { formatPrice } from '@/lib/utils'
 import { ProductService } from '@/lib/productService'
+import { CategoryService } from '@/lib/categoryService'
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
+  const [categories, setCategories] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchFeaturedProducts()
+    fetchHomepageData()
   }, [])
 
-  const fetchFeaturedProducts = async () => {
+  const fetchHomepageData = async () => {
     try {
       setLoading(true)
       
       // Fetch featured products from database
-      const result = await ProductService.getProducts({
+      const productsResult = await ProductService.getProducts({
         limit: 6,
         is_featured: true,
         status: 'active'
       })
       
-      setFeaturedProducts(result.products)
+      // Fetch category statistics
+      const categoryStats = await CategoryService.getCategoryStats()
+      
+      setFeaturedProducts(productsResult.products)
+      setCategories(categoryStats)
     } catch (error) {
-      console.error('Error fetching featured products:', error)
+      console.error('Error fetching homepage data:', error)
       setFeaturedProducts([])
+      // Use default categories as fallback
+      setCategories(CategoryService.getDefaultCategories())
     } finally {
       setLoading(false)
     }
@@ -56,36 +64,30 @@ export default function HomePage() {
 
   const seoData = SEOGenerator.generateHomepageSEO()
 
-  const categories = [
-    {
-      name: 'ตู้เย็น',
-      slug: 'refrigerator',
-      icon: Package,
-      count: 45,
-      description: 'ตู้เย็นเบอร์ 5 ประหยัดไฟ'
-    },
-    {
-      name: 'แอร์',
-      slug: 'air-conditioner',
-      icon: Zap,
-      count: 38,
-      description: 'แอร์ประหยัดไฟเบอร์ 5'
-    },
-    {
-      name: 'เครื่องซักผ้า',
-      slug: 'washing-machine',
-      icon: Package,
-      count: 32,
-      description: 'เครื่องซักผ้าเบอร์ 5'
-    },
-    {
-      name: 'ไมโครเวฟ',
-      slug: 'microwave',
-      icon: Package,
-      count: 28,
-      description: 'ไมโครเวฟเบอร์ 5'
+  // Get icon component based on category slug
+  const getCategoryIcon = (slug: string) => {
+    const iconMap: Record<string, any> = {
+      'refrigerator': Package,
+      'air-conditioner': Zap,
+      'washing-machine': Package,
+      'microwave': Package,
+      'water-heater': Package,
+      'fan': Package,
+      'hair-dryer': Package,
+      'tv': Package,
+      'water-pump': Package
     }
-  ]
+    return iconMap[slug] || Package
+  }
+
+  // Transform category stats to display format
+  const displayCategories = categories.slice(0, 4).map(cat => ({
+    name: cat.category,
+    slug: cat.slug,
+    icon: getCategoryIcon(cat.slug),
+    count: cat.count,
+    description: `${cat.category}เบอร์ 5 ประหยัดไฟ`
+  }))
 
   const features = [
     {
@@ -127,7 +129,7 @@ export default function HomePage() {
                 <div className="space-y-6">
                   <Badge variant="outline" className="bg-primary-100 text-primary-800 border-primary-300 shadow-soft">
                     <Zap className="w-4 h-4 mr-2" />
-                    เว็บไซต์ประหยัดไฟเบอร์ 5
+                    เว็บไซต์เลือกให้คุ้ม.com
                   </Badge>
                   <h1 className="text-responsive-3xl lg:text-6xl font-bold text-gray-900 leading-tight text-balance">
                     เครื่องใช้ไฟฟ้า
@@ -239,7 +241,7 @@ export default function HomePage() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {categories.map((category, index) => {
+              {displayCategories.map((category, index) => {
                 const Icon = category.icon
                 return (
                   <Link key={category.slug} href={`/category/${category.slug}`}>

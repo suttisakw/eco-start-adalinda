@@ -137,7 +137,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600">ภาพรวมระบบจัดการสินค้าประหยัดไฟเบอร์ 5 (Public Access)</p>
+        <p className="text-gray-600">ภาพรวมระบบจัดการสินค้าเลือกให้คุ้ม.com (Public Access)</p>
       </div>
 
       {/* Stats Cards */}

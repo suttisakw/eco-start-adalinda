@@ -53,13 +53,13 @@ export default function Footer() {
                 <Zap className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">ประหยัดไฟเบอร์ 5</h3>
+                <h3 className="text-lg font-bold">เลือกให้คุ้ม.com</h3>
                 <p className="text-sm text-gray-400">Energy Efficient</p>
               </div>
             </div>
             
             <p className="text-gray-300 text-sm leading-relaxed">
-              เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ 
+              เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าประหยัดไฟ 
               เปรียบเทียบราคาและข้อมูลประหยัดพลังงานจาก EGAT
             </p>
 
@@ -183,7 +183,7 @@ export default function Footer() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © {currentYear} ประหยัดไฟเบอร์ 5. สงวนลิขสิทธิ์ทุกประการ
+              © {currentYear} เลือกให้คุ้ม.com. สงวนลิขสิทธิ์ทุกประการ
             </div>
             
             <div className="flex items-center space-x-6 text-sm text-gray-400">

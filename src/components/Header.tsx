@@ -47,21 +47,9 @@ export default function Header() {
   const navigation = [
     { name: 'หน้าแรก', href: '/' },
     { name: 'ค้นหาสินค้า', href: '/search' },
-    { name: 'เปรียบเทียบ', href: '/compare' },
-    { name: 'เกี่ยวกับเรา', href: '/about' },
-    { name: 'ติดต่อ', href: '/contact' },
-  ]
-
-  const categories = [
-    { name: 'ตู้เย็น', href: '/category/refrigerator' },
-    { name: 'แอร์', href: '/category/air-conditioner' },
-    { name: 'เครื่องซักผ้า', href: '/category/washing-machine' },
-    { name: 'ไมโครเวฟ', href: '/category/microwave' },
-    { name: 'เครื่องทำน้ำอุ่น', href: '/category/water-heater' },
-    { name: 'พัดลม', href: '/category/fan' },
-    { name: 'เครื่องเป่าผม', href: '/category/hair-dryer' },
-    { name: 'ทีวี', href: '/category/tv' },
-    { name: 'ปั๊มน้ำ', href: '/category/water-pump' },
+    // { name: 'เปรียบเทียบ', href: '/compare' },
+    // { name: 'เกี่ยวกับเรา', href: '/about' },
+    // { name: 'ติดต่อ', href: '/contact' },
   ]
 
   return (
@@ -71,16 +59,10 @@ export default function Header() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center space-x-4">
-              <span>🚚 ส่งฟรีทั่วประเทศ</span>
               <span>💚 ประหยัดไฟสูงสุด</span>
               <span>⭐ ข้อมูลจาก EGAT</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/admin" className="hover:text-green-200">
-                <BarChart3 className="w-4 h-4 mr-1 inline" />
-                Admin
-              </Link>
-            </div>
+
           </div>
         </div>
       </div>
@@ -94,7 +76,7 @@ export default function Header() {
               <Zap className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">ประหยัดไฟเบอร์ 5</h1>
+              <h1 className="text-xl font-bold text-gray-900">เลือกให้คุ้ม.com</h1>
               <p className="text-xs text-gray-600">Energy Efficient</p>
             </div>
           </Link>
@@ -118,7 +100,7 @@ export default function Header() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="ค้นหาเครื่องใช้ไฟฟ้าเบอร์ 5..."
+                placeholder="ค้นหาเครื่องใช้ไฟฟ้าประหยัดไฟ..."
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
             </div>
@@ -173,7 +155,7 @@ export default function Header() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="ค้นหาเครื่องใช้ไฟฟ้าเบอร์ 5..."
+                  placeholder="ค้นหาเครื่องใช้ไฟฟ้าประหยัดไฟ..."
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
@@ -193,22 +175,7 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Mobile Categories */}
-            <div className="mt-6">
-              <h3 className="text-sm font-medium text-gray-900 mb-3">หมวดหมู่สินค้า</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {categories.map((category) => (
-                  <Link
-                    key={category.name}
-                    href={category.href}
-                    className="block px-3 py-2 text-sm text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {category.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
+
 
             {/* Mobile Action Buttons */}
             <div className="mt-6 flex space-x-4">
@@ -235,23 +202,7 @@ export default function Header() {
         </div>
       )}
 
-      {/* Categories Bar */}
-      <div className="hidden lg:block bg-gray-50 border-t">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center space-x-8 py-3">
-            <span className="text-sm font-medium text-gray-700">หมวดหมู่:</span>
-            {categories.map((category) => (
-              <Link
-                key={category.name}
-                href={category.href}
-                className="text-sm text-gray-600 hover:text-green-600 transition-colors"
-              >
-                {category.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+
     </header>
   )
 }
