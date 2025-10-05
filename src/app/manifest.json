@@ -1,0 +1,14 @@
+{
+  "name": "ประหยัดไฟเบอร์ 5 - เครื่องใช้ไฟฟ้าประหยัดไฟ",
+  "short_name": "ประหยัดไฟเบอร์ 5",
+  "description": "เว็บไซต์แนะนำเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ เปรียบเทียบราคาและข้อมูลประหยัดพลังงานจาก EGAT",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "icons": [],
+  "categories": ["shopping", "utilities", "lifestyle"],
+  "lang": "th",
+  "dir": "ltr"
+}
