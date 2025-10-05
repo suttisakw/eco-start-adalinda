@@ -56,17 +56,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let productPages: MetadataRoute.Sitemap = []
   
   try {
-    const { data: products } = await supabase
-      .from('products')
-      .select('slug, updated_at')
-      .eq('status', 'active')
-    
-    productPages = (products || []).map(product => ({
-      url: `${baseUrl}/product/${product.slug}`,
-      lastModified: new Date(product.updated_at),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }))
+    // Skip database query during build to avoid build errors
+    if (process.env.NODE_ENV === 'production') {
+      productPages = []
+    } else {
+      const { data: products } = await supabase
+        .from('products')
+        .select('slug, updated_at')
+        .eq('status', 'active')
+      
+      productPages = (products || []).map(product => ({
+        url: `${baseUrl}/product/${product.slug}`,
+        lastModified: new Date(product.updated_at),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      }))
+    }
   } catch (error) {
     console.error('Error fetching products for sitemap:', error)
     // Fallback to empty array if database is not available

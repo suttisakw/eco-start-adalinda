@@ -2,24 +2,46 @@ import { SEOProps, Product, Category } from '@/types'
 
 export class SEOGenerator {
   static generateProductSEO(product: Product): SEOProps {
-    const title = `${product.name} - ${product.brand} เบอร์ ${product.energy_rating}`
-    const description = `ซื้อ ${product.name} ${product.brand} เบอร์ ${product.energy_rating} ประหยัดไฟ ${product.energy_consumption_kwh} kWh/ปี ราคา ${product.price.toLocaleString()} บาท`
+    const brand = product.egat_product_data?.brand || product.shopee_product_data?.brand || 'ไม่ระบุ'
+    const category = product.egat_product_data?.category || product.shopee_product_data?.category || 'เครื่องใช้ไฟฟ้า'
+    const energyRating = product.energy_rating || 'A'
+    
+    // สร้าง title ที่เหมาะสำหรับ Facebook preview
+    const title = `${product.name} | ${brand} เบอร์ ${energyRating} ประหยัดไฟ`
+    
+    // สร้าง description ที่มีข้อมูลสำคัญสำหรับ Facebook
+    const priceText = product.original_price && product.original_price > product.price 
+      ? `ราคา ${product.price.toLocaleString()} บาท (ลดจาก ${product.original_price.toLocaleString()} บาท)`
+      : `ราคา ${product.price.toLocaleString()} บาท`
+    
+    const savingsText = product.annual_savings_baht 
+      ? `ประหยัดไฟ ${product.annual_savings_baht.toLocaleString()} บาท/ปี`
+      : 'ประหยัดไฟ'
+    
+    const ratingText = product.rating > 0 
+      ? `⭐ ${product.rating}/5 (${product.review_count.toLocaleString()} รีวิว)`
+      : ''
+    
+    const description = `${product.name} ${brand} เบอร์ ${energyRating} ${category} ${priceText} ${savingsText} ${ratingText} ข้อมูลจาก EGAT ซื้อใน Shopee`
+    
     const keywords = [
       product.name,
-      product.brand || '',
-      `เบอร์ ${product.energy_rating}`,
+      brand,
+      `เบอร์ ${energyRating}`,
       'ประหยัดไฟ',
       'เครื่องใช้ไฟฟ้า',
-      product.category || '',
+      category,
       'EGAT',
-      'Shopee'
+      'Shopee',
+      `${brand} ${product.name}`,
+      `${category} เบอร์ ${energyRating}`
     ].filter(Boolean)
     
     return {
       title,
       description,
       keywords,
-      image: product.image_urls[0],
+      image: product.image_urls?.[0],
       url: `/product/${product.slug}`,
       type: 'product',
       product

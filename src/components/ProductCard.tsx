@@ -73,9 +73,9 @@ export default function ProductCard({
             <div className="absolute top-2 left-2 flex flex-col gap-1">
               <Badge 
                 variant="outline" 
-                className={`${getEnergyRatingColor(product.energy_rating)} border-0`}
+                className={`${getEnergyRatingColor(product.energy_rating || 'A')} border-0`}
               >
-                {formatEnergyRating(product.energy_rating)}
+                {formatEnergyRating(product.energy_rating || 'A')}
               </Badge>
               
               {product.is_featured && (
@@ -121,7 +121,7 @@ export default function ProductCard({
             </h3>
 
             {/* Brand */}
-            <p className="text-sm text-gray-600">{product.brand}</p>
+            <p className="text-sm text-gray-600">{product.egat_product_data?.brand || product.shopee_product_data?.brand || 'ไม่ระบุ'}</p>
 
             {/* Rating */}
             {product.rating > 0 && (

@@ -16,8 +16,14 @@ export default function SEOOptimizer({
   children
 }: SEOOptimizerProps) {
   const fullTitle = `${title} | ประหยัดไฟเบอร์ 5`
-  const fullUrl = `${process.env.NEXT_PUBLIC_SITE_URL}${url || ''}`
-  const defaultImage = `${process.env.NEXT_PUBLIC_SITE_URL}/assets/hero-banner.svg`
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  
+  // ใช้ redirect URL สำหรับ Facebook sharing เพื่อให้สามารถ track และ redirect ได้
+  const facebookUrl = product?.affiliate_url || product?.shopee_url 
+    ? `${siteUrl}${url}/redirect?source=facebook`
+    : `${siteUrl}${url || ''}`
+  const fullUrl = `${siteUrl}${url || ''}`
+  const defaultImage = `${siteUrl}/assets/hero-banner.svg`
   const finalImage = image || product?.image_urls?.[0] || defaultImage
 
   const defaultKeywords = [
@@ -46,27 +52,63 @@ export default function SEOOptimizer({
         {/* Open Graph Tags */}
         <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={description} />
-        <meta property="og:type" content={type} />
-        <meta property="og:url" content={fullUrl} />
+        <meta property="og:type" content={type === 'product' ? 'product' : 'website'} />
+        <meta property="og:url" content={facebookUrl} />
         <meta property="og:image" content={finalImage} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={product?.name || title} />
         <meta property="og:site_name" content="ประหยัดไฟเบอร์ 5" />
         <meta property="og:locale" content="th_TH" />
+        
+        {/* Product-specific Open Graph Tags */}
+        {product && (
+          <>
+            <meta property="og:price:amount" content={product.price.toString()} />
+            <meta property="og:price:currency" content="THB" />
+            {product.original_price && product.original_price > product.price && (
+              <meta property="og:price:original_amount" content={product.original_price.toString()} />
+            )}
+            {product.rating > 0 && (
+              <>
+                <meta property="og:rating" content={product.rating.toString()} />
+                <meta property="og:rating_scale" content="5" />
+              </>
+            )}
+            <meta property="product:brand" content={product.egat_product_data?.brand || product.shopee_product_data?.brand || ''} />
+            <meta property="product:availability" content="in stock" />
+            <meta property="product:condition" content="new" />
+            <meta property="product:price:amount" content={product.price.toString()} />
+            <meta property="product:price:currency" content="THB" />
+            <meta property="product:category" content={product.egat_product_data?.category || product.shopee_product_data?.category || 'เครื่องใช้ไฟฟ้า'} />
+          </>
+        )}
         
         {/* Twitter Cards */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={finalImage} />
+        <meta name="twitter:image:alt" content={product?.name || title} />
         <meta name="twitter:site" content="@energyefficient" />
+        <meta name="twitter:creator" content="@energyefficient" />
+        
+        {/* Additional Meta Tags for Better Social Sharing */}
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="ประหยัดไฟเบอร์ 5" />
+        
+        {/* Facebook App ID (ถ้ามี) */}
+        <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || ''} />
+        
+        {/* WhatsApp Sharing */}
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:secure_url" content={finalImage} />
         
         {/* Additional Meta Tags */}
         <meta name="theme-color" content="#16a34a" />
         <meta name="msapplication-TileColor" content="#16a34a" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="ประหยัดไฟเบอร์ 5" />
         
         {/* Canonical URL */}
         <link rel="canonical" href={fullUrl} />
@@ -80,13 +122,13 @@ export default function SEOOptimizer({
                 "@context": "https://schema.org",
                 "@type": "Product",
                 "name": product.name,
-                "description": product.description || `${product.name} ${product.brand} เบอร์ ${product.energy_rating} ประหยัดไฟ`,
+                "description": product.description || `${product.name} ${product.egat_product_data?.brand || product.shopee_product_data?.brand || ''} เบอร์ ${product.energy_rating} ประหยัดไฟ`,
                 "image": product.image_urls,
                 "brand": {
                   "@type": "Brand",
-                  "name": product.brand
+                  "name": product.egat_product_data?.brand || product.shopee_product_data?.brand || ''
                 },
-                "category": product.category,
+                "category": product.egat_product_data?.category || product.shopee_product_data?.category || '',
                 "offers": {
                   "@type": "Offer",
                   "price": product.price,
