@@ -16,9 +16,14 @@ import {
   Calendar,
   Download,
   Filter,
-  RefreshCw
+  RefreshCw,
+  AlertCircle,
+  ExternalLink
 } from 'lucide-react'
 import { formatPrice, formatDateTime } from '@/lib/utils'
+import { shopeeAffiliateApi } from '@/lib/shopeeAffiliateApi'
+import { shopeeShortLinkGenerator } from '@/lib/shopeeShortLink'
+import { ShopeeAnalyticsData } from '@/types'
 
 interface AnalyticsData {
   overview: {
@@ -61,18 +66,129 @@ interface AnalyticsData {
 }
 
 export default function AnalyticsPage() {
+  const [shopeeAnalytics, setShopeeAnalytics] = useState<ShopeeAnalyticsData | null>(null)
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [dateRange, setDateRange] = useState('7d')
+  const [shopeeApiStatus, setShopeeApiStatus] = useState<'loading' | 'connected' | 'error'>('loading')
+  const [shopeeError, setShopeeError] = useState<string>('')
+  const [shortLinkApiStatus, setShortLinkApiStatus] = useState<'loading' | 'connected' | 'error'>('loading')
+  const [shortLinkError, setShortLinkError] = useState<string>('')
 
   useEffect(() => {
     fetchAnalytics()
+    checkShopeeApiConnection()
+    checkShortLinkApiConnection()
   }, [dateRange])
+
+  const checkShopeeApiConnection = async () => {
+    try {
+      setShopeeApiStatus('loading')
+      setShopeeError('')
+      
+      const response = await shopeeAffiliateApi.getConversionReport({
+        start_time: Date.now() - 24 * 60 * 60 * 1000, // 24 hours ago
+        end_time: Date.now()
+      })
+      
+      setShopeeApiStatus('connected')
+    } catch (error: any) {
+      console.error('Shopee API connection error:', error)
+      setShopeeApiStatus('error')
+      setShopeeError(error.message || 'Failed to connect to Shopee API')
+    }
+  }
+
+  const checkShortLinkApiConnection = async () => {
+    try {
+      setShortLinkApiStatus('loading')
+      setShortLinkError('')
+      
+      // Test short link generation
+      const testResult = await shopeeShortLinkGenerator.generateShortLinkViaApi(
+        'https://shopee.co.th/test-product',
+        {
+          affiliateId: 'test',
+          subId: 'test_connection',
+          customValues: {
+            referralSource: 'test',
+            customValue1: 'connection-test'
+          }
+        }
+      )
+      
+      if (testResult.success) {
+        setShortLinkApiStatus('connected')
+      } else {
+        setShortLinkApiStatus('error')
+        setShortLinkError(testResult.error || 'Short link API test failed')
+      }
+    } catch (error: any) {
+      console.error('Short Link API connection error:', error)
+      setShortLinkApiStatus('error')
+      setShortLinkError(error.message || 'Failed to connect to Short Link API')
+    }
+  }
+
+  const getDateRange = (range: string) => {
+    const now = Date.now()
+    const days = {
+      '7d': 7,
+      '30d': 30,
+      '90d': 90,
+      '1y': 365
+    }
+    
+    const daysToSubtract = days[range as keyof typeof days] || 7
+    const startTime = now - (daysToSubtract * 24 * 60 * 60 * 1000)
+    
+    return {
+      start_time: Math.floor(startTime / 1000),
+      end_time: Math.floor(now / 1000)
+    }
+  }
 
   const fetchAnalytics = async () => {
     try {
       setLoading(true)
-      // TODO: Replace with actual API call
+      setError(null)
+      
+      const dateRangeParams = getDateRange(dateRange)
+      
+      // Fetch data from Shopee Affiliate API
+      console.log('🔄 Fetching Shopee analytics data...', dateRangeParams)
+      
+      // Get conversion report
+      const conversionResponse = await shopeeAffiliateApi.getConversionReport({
+        ...dateRangeParams,
+        page: 1,
+        page_size: 100
+      })
+      
+      // Get validation report
+      const validationResponse = await shopeeAffiliateApi.getValidationReport({
+        ...dateRangeParams,
+        page: 1,
+        page_size: 100
+      })
+      
+      // Transform the data
+      const transformedData = shopeeAffiliateApi.transformConversionData(conversionResponse)
+      const validationData = shopeeAffiliateApi.transformValidationData(validationResponse)
+      
+      const shopeeData: ShopeeAnalyticsData = {
+        ...transformedData,
+        rawValidations: validationData.rawValidations,
+        summary: {
+          ...transformedData.summary,
+          ...validationData.summary
+        }
+      }
+      
+      setShopeeAnalytics(shopeeData)
+      
+      // Keep mock data for non-Shopee metrics
       const mockAnalytics: AnalyticsData = {
         overview: {
           total_products: 156,
@@ -166,8 +282,10 @@ export default function AnalyticsPage() {
         ]
       }
       setAnalytics(mockAnalytics)
-    } catch (error) {
+      
+    } catch (error: any) {
       console.error('Error fetching analytics:', error)
+      setError(error.message || 'เกิดข้อผิดพลาดในการโหลดข้อมูล')
     } finally {
       setLoading(false)
     }
@@ -210,35 +328,35 @@ export default function AnalyticsPage() {
   const overviewCards = [
     {
       title: 'สินค้าทั้งหมด',
-      value: analytics.overview.total_products.toLocaleString(),
+      value: analytics?.overview.total_products.toLocaleString() || '0',
       change: '+12%',
       changeType: 'positive' as const,
       icon: BarChart3,
-      description: `${analytics.overview.active_products} ใช้งาน`
+      description: `${analytics?.overview.active_products || 0} ใช้งาน`
     },
     {
-      title: 'คลิก Affiliate',
-      value: analytics.overview.total_clicks.toLocaleString(),
-      change: '+8.5%',
-      changeType: 'positive' as const,
-      icon: MousePointer,
-      description: 'คลิกทั้งหมด'
-    },
-    {
-      title: 'การขาย',
-      value: analytics.overview.total_conversions.toLocaleString(),
+      title: 'การขาย (Shopee)',
+      value: shopeeAnalytics?.summary.total_conversions.toLocaleString() || '0',
       change: '+15.2%',
       changeType: 'positive' as const,
       icon: ShoppingCart,
-      description: `${analytics.overview.conversion_rate}% conversion rate`
+      description: 'Conversion จาก Shopee'
     },
     {
-      title: 'รายได้',
-      value: formatPrice(analytics.overview.revenue),
+      title: 'รายได้ (Shopee)',
+      value: shopeeAnalytics?.summary.total_revenue ? formatPrice(shopeeAnalytics.summary.total_revenue) : '฿0',
       change: '+22.1%',
       changeType: 'positive' as const,
       icon: DollarSign,
-      description: `AOV ${formatPrice(analytics.overview.avg_order_value)}`
+      description: `AOV ${shopeeAnalytics?.summary.avg_order_value ? formatPrice(shopeeAnalytics.summary.avg_order_value) : '฿0'}`
+    },
+    {
+      title: 'Commission (Shopee)',
+      value: shopeeAnalytics?.summary.total_commission ? formatPrice(shopeeAnalytics.summary.total_commission) : '฿0',
+      change: '+18.5%',
+      changeType: 'positive' as const,
+      icon: TrendingUp,
+      description: 'Commission ที่ได้รับ'
     }
   ]
 
@@ -248,7 +366,7 @@ export default function AnalyticsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
-          <p className="text-gray-600">วิเคราะห์ข้อมูลการใช้งานและประสิทธิภาพ</p>
+          <p className="text-gray-600">วิเคราะห์ข้อมูลการใช้งานและประสิทธิภาพจาก Shopee Affiliate</p>
         </div>
         <div className="flex items-center space-x-4">
           <select
@@ -271,6 +389,86 @@ export default function AnalyticsPage() {
             ส่งออก
           </Button>
         </div>
+      </div>
+
+      {/* Error Display */}
+      {error && (
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-3">
+              <AlertCircle className="w-5 h-5 text-red-600" />
+              <div>
+                <h3 className="font-medium text-red-800">เกิดข้อผิดพลาด</h3>
+                <p className="text-sm text-red-700">{error}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Shopee API Status */}
+      {shopeeAnalytics && (
+        <Card className="border-green-200 bg-green-50">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <ExternalLink className="w-5 h-5 text-green-600" />
+                <div>
+                  <h3 className="font-medium text-green-800">ข้อมูล Shopee Affiliate</h3>
+                  <p className="text-sm text-green-700">
+                    ข้อมูลล่าสุด: {new Date().toLocaleString('th-TH')}
+                  </p>
+                </div>
+              </div>
+              <Badge variant="outline" className="text-green-600 border-green-600">
+                เชื่อมต่อสำเร็จ
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* API Status Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {/* Shopee API Status */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Shopee Affiliate API</CardTitle>
+            <div className={`w-3 h-3 rounded-full ${
+              shopeeApiStatus === 'connected' ? 'bg-green-500' : 
+              shopeeApiStatus === 'error' ? 'bg-red-500' : 'bg-yellow-500'
+            }`} />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {shopeeApiStatus === 'connected' ? 'Connected' : 
+               shopeeApiStatus === 'error' ? 'Error' : 'Loading...'}
+            </div>
+            {shopeeError && (
+              <p className="text-xs text-muted-foreground mt-1">{shopeeError}</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Short Link API Status */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Short Link API</CardTitle>
+            <div className={`w-3 h-3 rounded-full ${
+              shortLinkApiStatus === 'connected' ? 'bg-green-500' : 
+              shortLinkApiStatus === 'error' ? 'bg-red-500' : 'bg-yellow-500'
+            }`} />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {shortLinkApiStatus === 'connected' ? 'Connected' : 
+               shortLinkApiStatus === 'error' ? 'Error' : 'Loading...'}
+            </div>
+            {shortLinkError && (
+              <p className="text-xs text-muted-foreground mt-1">{shortLinkError}</p>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       {/* Overview Cards */}
@@ -307,75 +505,91 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Top Products */}
+        {/* Top Products from Shopee */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
               <BarChart3 className="mr-2 h-5 w-5" />
-              สินค้าที่ขายดี
+              สินค้าที่ขายดี (Shopee)
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {analytics.top_products.map((product, index) => (
-                <div key={product.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-medium text-blue-600">#{index + 1}</span>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900">{product.name}</h4>
-                      <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <span>{product.clicks} คลิก</span>
-                        <span>{product.conversions} ขาย</span>
-                        <span>{product.conversion_rate}%</span>
+            {shopeeAnalytics && shopeeAnalytics.productStats.length > 0 ? (
+              <div className="space-y-4">
+                {shopeeAnalytics.productStats.slice(0, 5).map((product, index) => (
+                  <div key={product.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span className="text-sm font-medium text-blue-600">#{index + 1}</span>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-gray-900 truncate max-w-[200px]">
+                          {product.name}
+                        </h4>
+                        <div className="flex items-center space-x-4 text-sm text-gray-600">
+                          <span>{product.conversions} ขาย</span>
+                          <span>{formatPrice(product.revenue)}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold text-green-600">
-                      {formatPrice(product.revenue)}
+                    <div className="text-right">
+                      <div className="font-semibold text-green-600">
+                        {formatPrice(product.commission)}
+                      </div>
+                      <div className="text-xs text-gray-500">Commission</div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <BarChart3 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                <p>ไม่มีข้อมูลสินค้าจาก Shopee</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        {/* Category Performance */}
+        {/* Category Performance from Shopee */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
               <Eye className="mr-2 h-5 w-5" />
-              ประสิทธิภาพตามหมวดหมู่
+              ประสิทธิภาพตามหมวดหมู่ (Shopee)
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {analytics.category_performance.map((category) => (
-                <div key={category.category} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-gray-900">{category.category}</h4>
-                    <span className="text-sm text-gray-600">{category.products} สินค้า</span>
+            {shopeeAnalytics && shopeeAnalytics.categoryStats.length > 0 ? (
+              <div className="space-y-4">
+                {shopeeAnalytics.categoryStats.map((category) => (
+                  <div key={category.category} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium text-gray-900">{category.category}</h4>
+                      <span className="text-sm text-gray-600">{category.conversions} ขาย</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">ขาย:</span>
+                        <div className="font-medium">{category.conversions}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">รายได้:</span>
+                        <div className="font-medium text-green-600">{formatPrice(category.revenue)}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Commission:</span>
+                        <div className="font-medium text-blue-600">{formatPrice(category.commission)}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-4 text-sm">
-                    <div>
-                      <span className="text-gray-600">คลิก:</span>
-                      <div className="font-medium">{category.clicks.toLocaleString()}</div>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">ขาย:</span>
-                      <div className="font-medium">{category.conversions}</div>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">รายได้:</span>
-                      <div className="font-medium text-green-600">{formatPrice(category.revenue)}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <Eye className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                <p>ไม่มีข้อมูลหมวดหมู่จาก Shopee</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

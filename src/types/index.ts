@@ -264,3 +264,94 @@ export interface Profile {
   // Allow merged fields from Supabase Auth user
   [key: string]: any;
 }
+
+// Short Link Types
+export interface ShortLinkApiRequest {
+  url: string
+  sub_id?: string
+  custom_values?: Record<string, string>
+}
+
+export interface ShortLinkApiResponse {
+  code: number
+  message: string
+  data: {
+    short_link: string
+    original_url: string
+    sub_id: string
+    click_id: string
+    created_at: number
+    expires_at?: number
+  }
+}
+
+export interface ShortLinkResult {
+  success: boolean
+  shortLink?: string
+  clickId?: string
+  error?: string
+}
+
+// Shopee Affiliate API Types
+export interface ShopeeConversion {
+  click_id: string;
+  conversion_id: string;
+  conversion_time: number;
+  conversion_type: string;
+  commission_rate: number;
+  commission_amount: number;
+  order_amount: number;
+  order_id: string;
+  shop_id: string;
+  product_id: string;
+  product_name: string;
+  category_id: string;
+  status: string;
+}
+
+export interface ShopeeValidation {
+  click_id: string;
+  validation_time: number;
+  validation_status: string;
+  order_amount: number;
+  order_id: string;
+  shop_id: string;
+  product_id: string;
+  product_name: string;
+  category_id: string;
+  reason?: string;
+}
+
+export interface ShopeeAnalyticsSummary {
+  total_conversions: number;
+  total_revenue: number;
+  total_commission: number;
+  avg_order_value: number;
+  total_validations?: number;
+  approved_validations?: number;
+  rejected_validations?: number;
+  pending_validations?: number;
+}
+
+export interface ShopeeCategoryStats {
+  category: string;
+  conversions: number;
+  revenue: number;
+  commission: number;
+}
+
+export interface ShopeeProductStats {
+  id: string;
+  name: string;
+  conversions: number;
+  revenue: number;
+  commission: number;
+}
+
+export interface ShopeeAnalyticsData {
+  summary: ShopeeAnalyticsSummary;
+  categoryStats: ShopeeCategoryStats[];
+  productStats: ShopeeProductStats[];
+  rawConversions: ShopeeConversion[];
+  rawValidations?: ShopeeValidation[];
+}

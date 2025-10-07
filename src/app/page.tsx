@@ -116,28 +116,28 @@ export default function HomePage() {
     <SEOOptimizer {...seoData}>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-green-50 to-emerald-50 py-20 lg:py-32">
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-green-50 to-emerald-50 py-12 sm:py-16 lg:py-32">
           {/* Background decorations */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
+            <div className="absolute -top-20 -right-20 sm:-top-40 sm:-right-40 w-40 h-40 sm:w-80 sm:h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+            <div className="absolute -bottom-20 -left-20 sm:-bottom-40 sm:-left-40 w-40 h-40 sm:w-80 sm:h-80 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
           </div>
           
           <div className="container mx-auto px-4 relative">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <div className="space-y-8 animate-fade-in">
                 <div className="space-y-6">
                   <Badge variant="outline" className="bg-primary-100 text-primary-800 border-primary-300 shadow-soft">
                     <Zap className="w-4 h-4 mr-2" />
                     เว็บไซต์เลือกให้คุ้ม.com
                   </Badge>
-                  <h1 className="text-responsive-3xl lg:text-6xl font-bold text-gray-900 leading-tight text-balance">
+                  <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 leading-tight text-balance">
                     เครื่องใช้ไฟฟ้า
                     <span className="gradient-text"> เบอร์ 5</span>
                     <br />
                     <span className="text-primary-600">ประหยัดไฟ</span>
                   </h1>
-                  <p className="text-lg lg:text-xl text-gray-600 leading-relaxed text-balance max-w-2xl">
+                  <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed text-balance max-w-2xl">
                     ค้นหาและเปรียบเทียบเครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ 
                     ข้อมูลจาก EGAT ราคาจาก Shopee พร้อมคำแนะนำการประหยัดพลังงาน
                   </p>
@@ -145,62 +145,62 @@ export default function HomePage() {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/search">
-                    <Button size="lg" className="bg-primary-600 hover:bg-primary-700 text-lg px-8 py-4 shadow-medium hover:shadow-large transition-all duration-300 interactive">
-                      <Zap className="w-5 h-5 mr-2" />
+                    <Button size="lg" className="bg-primary-600 hover:bg-primary-700 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 shadow-medium hover:shadow-large transition-all duration-300 interactive w-full sm:w-auto">
+                      <Zap className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                       ค้นหาสินค้า
                     </Button>
                   </Link>
                   <Link href="/compare">
-                    <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-2 border-primary-200 hover:border-primary-300 hover:bg-primary-50 shadow-soft hover:shadow-medium transition-all duration-300">
-                      <TrendingUp className="w-5 h-5 mr-2" />
+                    <Button size="lg" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 border-2 border-primary-200 hover:border-primary-300 hover:bg-primary-50 shadow-soft hover:shadow-medium transition-all duration-300 w-full sm:w-auto">
+                      <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                       เปรียบเทียบ
                     </Button>
                   </Link>
                 </div>
 
-                <div className="grid grid-cols-3 gap-6 pt-8">
+                <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6 sm:pt-8">
                   <div className="text-center group">
-                    <div className="text-2xl lg:text-3xl font-bold text-primary-600 group-hover:scale-110 transition-transform duration-300">500+</div>
-                    <div className="text-sm text-gray-600">สินค้าเบอร์ 5</div>
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-600 group-hover:scale-110 transition-transform duration-300">500+</div>
+                    <div className="text-xs sm:text-sm text-gray-600">สินค้าเบอร์ 5</div>
                   </div>
                   <div className="text-center group">
-                    <div className="text-2xl lg:text-3xl font-bold text-primary-600 group-hover:scale-110 transition-transform duration-300">50%</div>
-                    <div className="text-sm text-gray-600">ประหยัดไฟ</div>
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-600 group-hover:scale-110 transition-transform duration-300">50%</div>
+                    <div className="text-xs sm:text-sm text-gray-600">ประหยัดไฟ</div>
                   </div>
                   <div className="text-center group">
-                    <div className="text-2xl lg:text-3xl font-bold text-primary-600 group-hover:scale-110 transition-transform duration-300">1000+</div>
-                    <div className="text-sm text-gray-600">รีวิว</div>
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary-600 group-hover:scale-110 transition-transform duration-300">1000+</div>
+                    <div className="text-xs sm:text-sm text-gray-600">รีวิว</div>
                   </div>
                 </div>
               </div>
 
               <div className="relative animate-slide-up">
-                <div className="relative w-full h-96 lg:h-[500px] group">
+                <div className="relative w-full h-64 sm:h-80 lg:h-[500px] group">
                   <Image
                     src="/assets/hero-banner.svg"
                     alt="เครื่องใช้ไฟฟ้าเบอร์ 5 ประหยัดไฟ"
                     fill
-                    className="object-cover rounded-2xl shadow-large group-hover:shadow-xl transition-all duration-500"
+                    className="object-cover rounded-xl sm:rounded-2xl shadow-large group-hover:shadow-xl transition-all duration-500"
                     priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-xl sm:rounded-2xl"></div>
                 </div>
-                <div className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-large border border-white/20">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                      <Award className="w-6 h-6 text-primary-600" />
+                <div className="absolute -bottom-3 -left-3 sm:-bottom-6 sm:-left-6 bg-white/95 backdrop-blur-sm p-3 sm:p-6 rounded-lg sm:rounded-xl shadow-large border border-white/20">
+                  <div className="flex items-center space-x-2 sm:space-x-4">
+                    <div className="w-8 h-8 sm:w-12 sm:h-12 bg-primary-100 rounded-full flex items-center justify-center">
+                      <Award className="w-4 h-4 sm:w-6 sm:h-6 text-primary-600" />
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-900">ข้อมูลจาก EGAT</div>
-                      <div className="text-sm text-gray-600">รับรองคุณภาพ</div>
+                      <div className="font-semibold text-gray-900 text-sm sm:text-base">ข้อมูลจาก EGAT</div>
+                      <div className="text-xs sm:text-sm text-gray-600">รับรองคุณภาพ</div>
                     </div>
                   </div>
                 </div>
                 
                 {/* Floating elements */}
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full shadow-medium">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <div className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-white/90 backdrop-blur-sm px-2 py-1 sm:px-3 sm:py-2 rounded-full shadow-medium">
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <span className="text-xs font-medium text-gray-700">Live Data</span>
                   </div>
                 </div>
@@ -213,15 +213,15 @@ export default function HomePage() {
         <section className="py-16 lg:py-20 bg-white relative">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-responsive-2xl lg:text-4xl font-bold text-gray-900 mb-4 text-balance">
+              <div className="text-center mb-8 sm:mb-12">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 text-balance">
                   ค้นหาเครื่องใช้ไฟฟ้าเบอร์ 5
                 </h2>
-                <p className="text-lg text-gray-600 text-balance">
+                <p className="text-base sm:text-lg text-gray-600 text-balance">
                   ค้นหาสินค้าที่เหมาะสมกับความต้องการของคุณ
                 </p>
               </div>
-              <div className="bg-gradient-to-r from-primary-50 to-green-50 p-8 rounded-2xl shadow-soft">
+              <div className="bg-gradient-to-r from-primary-50 to-green-50 p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-soft">
                 <SearchBar showCategorySlider={true} showFilters={false} autoNavigate={false} />
               </div>
             </div>
@@ -229,37 +229,37 @@ export default function HomePage() {
         </section>
 
         {/* Categories Section */}
-        <section className="py-16 lg:py-20 bg-gradient-to-b from-gray-50 to-white">
+        <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-responsive-2xl lg:text-4xl font-bold text-gray-900 mb-4 text-balance">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 text-balance">
                 หมวดหมู่สินค้า
               </h2>
-              <p className="text-lg text-gray-600 text-balance">
+              <p className="text-base sm:text-lg text-gray-600 text-balance">
                 เลือกหมวดหมู่ที่คุณสนใจ
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {displayCategories.map((category, index) => {
                 const Icon = category.icon
                 return (
                   <Link key={category.slug} href={`/category/${category.slug}`}>
                     <Card className="hover:shadow-large transition-all duration-300 cursor-pointer group border-0 shadow-soft hover:-translate-y-2 bg-white/80 backdrop-blur-sm" 
                           style={{animationDelay: `${index * 100}ms`}}>
-                      <CardContent className="p-6 text-center">
-                        <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-soft">
-                          <Icon className="w-8 h-8 text-primary-600" />
+                      <CardContent className="p-4 sm:p-6 text-center">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-soft">
+                          <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary-600" />
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+                        <h3 className="text-sm sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 group-hover:text-primary-600 transition-colors">
                           {category.name}
                         </h3>
-                        <p className="text-sm text-gray-600 mb-4 text-balance">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 text-balance hidden sm:block">
                           {category.description}
                         </p>
-                        <div className="flex items-center justify-center text-sm text-primary-600 font-medium">
+                        <div className="flex items-center justify-center text-xs sm:text-sm text-primary-600 font-medium">
                           <span>{category.count} สินค้า</span>
-                          <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                         </div>
                       </CardContent>
                     </Card>

@@ -1,19 +1,76 @@
 import { ShortLinkParams, ParsedLinkData } from '@/types'
+import { shopeeAffiliateApi, ShortLinkRequest, ShortLinkResponse } from './shopeeAffiliateApi'
+
+interface ShortLinkResult {
+  success: boolean
+  shortLink?: string
+  clickId?: string
+  error?: string
+}
 
 class ShopeeShortLinkGenerator {
   private baseUrl = 'https://s.shopee.co.th/an_redir'
   private affiliateId: string
+  private useApi: boolean
 
   constructor() {
     this.affiliateId = process.env.NEXT_PUBLIC_SHOPEE_AFFILIATE_ID || ''
+    this.useApi = process.env.NEXT_PUBLIC_SHOPEE_USE_API === 'true'
   }
 
-  // สร้าง Short Link ตามมาตรฐาน Shopee
+  // สร้าง Short Link ตามมาตรฐาน Shopee (Legacy method)
   generateShortLink(shopeeUrl: string, params: ShortLinkParams): string {
     const encodedUrl = encodeURIComponent(shopeeUrl)
     const subId = this.generateSubId(params)
     
     return `${this.baseUrl}?origin_link=${encodedUrl}&affiliate_id=${this.affiliateId}&sub_id=${subId}`
+  }
+
+  // สร้าง Short Link ผ่าน Shopee API (แนะนำ)
+  async generateShortLinkViaApi(shopeeUrl: string, params: ShortLinkParams): Promise<ShortLinkResult> {
+    try {
+      if (!this.useApi) {
+        // Fallback to legacy method if API is disabled
+        const shortLink = this.generateShortLink(shopeeUrl, params)
+        return {
+          success: true,
+          shortLink,
+          clickId: this.generateNetworkClickId()
+        }
+      }
+
+      const request: ShortLinkRequest = {
+        url: shopeeUrl,
+        sub_id: this.generateSubId(params),
+        custom_values: params.customValues
+      }
+
+      const response: ShortLinkResponse = await shopeeAffiliateApi.createShortLink(request)
+      
+      if (response.code === 0) {
+        return {
+          success: true,
+          shortLink: response.data.short_link,
+          clickId: response.data.click_id
+        }
+      } else {
+        return {
+          success: false,
+          error: response.message || 'Failed to create short link'
+        }
+      }
+    } catch (error: any) {
+      console.error('Error creating short link via API:', error)
+      
+      // Fallback to legacy method on error
+      const shortLink = this.generateShortLink(shopeeUrl, params)
+      return {
+        success: true,
+        shortLink,
+        clickId: this.generateNetworkClickId(),
+        error: 'API failed, using fallback method'
+      }
+    }
   }
 
   // สร้าง Short Link สำหรับสินค้า
@@ -32,6 +89,22 @@ class ShopeeShortLinkGenerator {
     return this.generateShortLink(shopeeUrl, params)
   }
 
+  // สร้าง Short Link สำหรับสินค้าผ่าน API (แนะนำ)
+  async generateProductShortLinkViaApi(productId: string, shopeeUrl: string): Promise<ShortLinkResult> {
+    const params: ShortLinkParams = {
+      affiliateId: this.affiliateId,
+      subId: `product_${productId}_${Date.now()}`,
+      customValues: {
+        networkClickId: this.generateNetworkClickId(),
+        referralSource: 'product-page',
+        customValue1: 'energy-efficient',
+        customValue2: 'egat-verified',
+      }
+    }
+
+    return this.generateShortLinkViaApi(shopeeUrl, params)
+  }
+
   // สร้าง Short Link สำหรับหน้าแรก
   generateFeaturedShortLink(productId: string, shopeeUrl: string): string {
     const params: ShortLinkParams = {
@@ -46,6 +119,22 @@ class ShopeeShortLinkGenerator {
     }
 
     return this.generateShortLink(shopeeUrl, params)
+  }
+
+  // สร้าง Short Link สำหรับหน้าแรกผ่าน API (แนะนำ)
+  async generateFeaturedShortLinkViaApi(productId: string, shopeeUrl: string): Promise<ShortLinkResult> {
+    const params: ShortLinkParams = {
+      affiliateId: this.affiliateId,
+      subId: `featured_${productId}_${Date.now()}`,
+      customValues: {
+        networkClickId: this.generateNetworkClickId(),
+        referralSource: 'homepage',
+        customValue1: 'featured',
+        customValue2: 'energy-efficient',
+      }
+    }
+
+    return this.generateShortLinkViaApi(shopeeUrl, params)
   }
 
   // สร้าง Short Link สำหรับผลการค้นหา
@@ -64,6 +153,22 @@ class ShopeeShortLinkGenerator {
     return this.generateShortLink(shopeeUrl, params)
   }
 
+  // สร้าง Short Link สำหรับผลการค้นหาผ่าน API (แนะนำ)
+  async generateSearchShortLinkViaApi(productId: string, shopeeUrl: string, searchQuery: string): Promise<ShortLinkResult> {
+    const params: ShortLinkParams = {
+      affiliateId: this.affiliateId,
+      subId: `search_${productId}_${Date.now()}`,
+      customValues: {
+        networkClickId: this.generateNetworkClickId(),
+        referralSource: 'search',
+        customValue1: 'search',
+        customValue2: searchQuery.substring(0, 20),
+      }
+    }
+
+    return this.generateShortLinkViaApi(shopeeUrl, params)
+  }
+
   // สร้าง Short Link สำหรับเครื่องมือเปรียบเทียบ
   generateCompareShortLink(productId: string, shopeeUrl: string): string {
     const params: ShortLinkParams = {
@@ -78,6 +183,22 @@ class ShopeeShortLinkGenerator {
     }
 
     return this.generateShortLink(shopeeUrl, params)
+  }
+
+  // สร้าง Short Link สำหรับเครื่องมือเปรียบเทียบผ่าน API (แนะนำ)
+  async generateCompareShortLinkViaApi(productId: string, shopeeUrl: string): Promise<ShortLinkResult> {
+    const params: ShortLinkParams = {
+      affiliateId: this.affiliateId,
+      subId: `compare_${productId}_${Date.now()}`,
+      customValues: {
+        networkClickId: this.generateNetworkClickId(),
+        referralSource: 'compare',
+        customValue1: 'comparison',
+        customValue2: 'energy-efficient',
+      }
+    }
+
+    return this.generateShortLinkViaApi(shopeeUrl, params)
   }
 
   // ตรวจสอบ Short Link
@@ -183,3 +304,6 @@ class ShopeeShortLinkGenerator {
 }
 
 export const shopeeShortLinkGenerator = new ShopeeShortLinkGenerator()
+
+// Export types
+export type { ShortLinkResult }

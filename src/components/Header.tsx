@@ -57,12 +57,13 @@ export default function Header() {
       {/* Top Bar */}
       <div className="bg-green-600 text-white py-2">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-4">
-              <span>💚 ประหยัดไฟสูงสุด</span>
-              <span>⭐ ข้อมูลจาก EGAT</span>
+          <div className="flex items-center justify-between text-xs sm:text-sm">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <span className="hidden sm:inline">💚 ประหยัดไฟสูงสุด</span>
+              <span className="sm:hidden">💚 ประหยัดไฟ</span>
+              <span className="hidden sm:inline">⭐ ข้อมูลจาก EGAT</span>
+              <span className="sm:hidden">⭐ EGAT</span>
             </div>
-
           </div>
         </div>
       </div>
@@ -72,12 +73,15 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <Zap className="w-6 h-6 text-green-600" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <Zap className="w-4 h-4 sm:w-6 sm:h-6 text-green-600" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">เลือกให้คุ้ม.com</h1>
+            <div className="hidden sm:block">
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900">เลือกให้คุ้ม.com</h1>
               <p className="text-xs text-gray-600">Energy Efficient</p>
+            </div>
+            <div className="sm:hidden">
+              <h1 className="text-lg font-bold text-gray-900">เลือกให้คุ้ม</h1>
             </div>
           </Link>
 

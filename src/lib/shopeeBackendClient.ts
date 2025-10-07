@@ -6,7 +6,7 @@ class ShopeeBackendClient {
 
   constructor() {
     this.baseUrl = process.env.NEXT_PUBLIC_SHOPEE_BACKEND_URL || 'https://api.adalindawongsa.com'
-    this.apiKey = process.env.NEXT_PUBLIC_SHOPEE_API_KEY || process.env.SHOPEE_API_KEY || ''
+    this.apiKey = process.env.NEXT_PUBLIC_BACKEND__API_KEY || ''
     
     // Debug logging (remove in production)
     if (typeof window !== 'undefined') {

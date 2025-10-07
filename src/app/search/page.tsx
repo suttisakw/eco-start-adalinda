@@ -83,12 +83,29 @@ export default function SearchPage() {
   return (
     <SEOOptimizer {...seoData}>
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-4 sm:py-6 lg:py-8">
+          {/* Mobile Search Bar */}
+          <div className="lg:hidden mb-6">
+            <div className="space-y-4">
+              <SearchBar 
+                showFilters={false}
+                showCategorySlider={false}
+                onFilterChange={setFilters}
+              />
+              
+              {/* Mobile Filter Button */}
+              <div className="flex justify-center">
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Filter className="w-4 h-4" />
+                  ตัวกรอง
+                </Button>
+              </div>
+            </div>
+          </div>
 
-
-          <div className="grid lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8">
             {/* Sidebar - Search & Filters */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 hidden lg:block">
               <div className="sticky top-8">
                 <SearchBar 
                   showFilters={true}
@@ -101,14 +118,14 @@ export default function SearchPage() {
             {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Toolbar */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-4">
                 <div className="flex items-center space-x-4">
                   <span className="text-sm text-gray-600">
                     {products.length} สินค้า
                   </span>
                 </div>
 
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                   {/* Sort */}
                   <select
                     value={`${sortBy.field}_${sortBy.direction}`}
@@ -116,7 +133,7 @@ export default function SearchPage() {
                       const [field, direction] = e.target.value.split('_')
                       setSortBy({ field: field as any, direction: direction as any })
                     }}
-                    className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     {sortOptions.map((option) => (
                       <option key={`${option.value}_desc`} value={`${option.value}_desc`}>
@@ -150,12 +167,12 @@ export default function SearchPage() {
 
               {/* Products */}
               {loading ? (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {[...Array(6)].map((_, i) => (
                     <Card key={i} className="animate-pulse">
                       <CardContent className="p-0">
                         <div className="aspect-square bg-gray-200 rounded-t-lg" />
-                        <div className="p-4 space-y-3">
+                        <div className="p-3 sm:p-4 space-y-3">
                           <div className="h-4 bg-gray-200 rounded" />
                           <div className="h-3 bg-gray-200 rounded w-2/3" />
                           <div className="h-6 bg-gray-200 rounded w-1/2" />
@@ -165,9 +182,9 @@ export default function SearchPage() {
                   ))}
                 </div>
               ) : products.length > 0 ? (
-                <div className={`grid gap-6 ${
+                <div className={`grid gap-4 sm:gap-6 ${
                   viewMode === 'grid' 
-                    ? 'md:grid-cols-2 lg:grid-cols-3' 
+                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
                     : 'grid-cols-1'
                 }`}>
                   {products.map((product) => (
@@ -182,15 +199,15 @@ export default function SearchPage() {
                 </div>
               ) : (
                 <Card>
-                  <CardContent className="text-center py-12">
-                    <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <CardContent className="text-center py-8 sm:py-12">
+                    <Package className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
                       ไม่พบสินค้า
                     </h3>
-                    <p className="text-gray-600 mb-4">
+                    <p className="text-sm sm:text-base text-gray-600 mb-4">
                       ลองปรับเงื่อนไขการค้นหาหรือตัวกรอง
                     </p>
-                    <Button variant="outline">
+                    <Button variant="outline" size="sm" className="sm:size-default">
                       <Search className="w-4 h-4 mr-2" />
                       ค้นหาใหม่
                     </Button>
@@ -200,8 +217,8 @@ export default function SearchPage() {
 
               {/* Load More */}
               {products.length > 0 && products.length >= 12 && (
-                <div className="text-center mt-8">
-                  <Button variant="outline" size="lg">
+                <div className="text-center mt-6 sm:mt-8">
+                  <Button variant="outline" size="sm" className="sm:size-lg">
                     <TrendingUp className="w-4 h-4 mr-2" />
                     โหลดเพิ่มเติม
                   </Button>

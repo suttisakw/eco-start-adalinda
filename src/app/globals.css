@@ -308,6 +308,40 @@ html {
   }
 }
 
+/* Mobile-first responsive utilities */
+.mobile-only {
+  display: block;
+}
+
+@media (min-width: 641px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 641px) {
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Touch-friendly sizing */
+@media (max-width: 640px) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .touch-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}
+
 /* Modern utility classes */
 .glass-effect {
   background: rgba(255, 255, 255, 0.1);

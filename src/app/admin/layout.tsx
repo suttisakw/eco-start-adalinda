@@ -136,7 +136,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         {/* Mobile sidebar */}
         <div className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div className="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-md" onClick={handleCloseSidebar} />
-          <div className={`fixed inset-y-0 left-0 flex w-full flex-col bg-white/95 backdrop-blur-xl shadow-2xl transform transition-all duration-500 ease-out ${
+          <div className={`fixed inset-y-0 left-0 flex w-80 max-w-[85vw] flex-col bg-white/95 backdrop-blur-xl shadow-2xl transform transition-all duration-500 ease-out ${
             sidebarOpen && !isClosing ? 'translate-x-0 scale-100' : '-translate-x-full scale-95'
           }`}>
             {/* Mobile Header */}
@@ -329,14 +329,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </Button>
 
             <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-              <div className="flex flex-1 items-center">
-                <div className="text-sm text-gray-600">
+              <div className="flex flex-1 items-center min-w-0">
+                <div className="text-sm text-gray-600 truncate">
                   <span className="font-medium">เว็บไซต์เลือกให้คุ้ม.com</span>
-                  <span className="mx-2">•</span>
-                  <span>Admin Panel (Public Access)</span>
+                  <span className="mx-2 hidden sm:inline">•</span>
+                  <span className="hidden sm:inline">Admin Panel (Public Access)</span>
+                  <span className="sm:hidden">Admin</span>
                 </div>
               </div>
-              <div className="flex items-center gap-x-4 lg:gap-x-6">
+              <div className="flex items-center gap-x-2 lg:gap-x-6">
                 <Button
                   variant="outline"
                   size="sm"
@@ -345,6 +346,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 >
                   <Home className="h-4 w-4 mr-2" />
                   กลับหน้าหลัก
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => router.push('/')}
+                  className="sm:hidden"
+                >
+                  <Home className="h-4 w-4" />
                 </Button>
               </div>
             </div>
